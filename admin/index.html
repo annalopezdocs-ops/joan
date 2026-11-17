@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin | Voice Work</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#061b38">
+<link rel="icon" href="../assets/favicon-48.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/admin.css">
+<script src="../js/supabase-config.js"></script>
+<script type="module" src="../js/admin.js"></script>
+</head>
+<body>
+
+<!-- Not connected to Supabase yet -->
+<div id="view-setup" class="card setup-note" hidden>
+  <h1>Almost ready</h1>
+  <p class="sub" style="color:var(--muted);margin-bottom:14px">The admin isn’t connected to its database yet.</p>
+  <ol>
+    <li>Follow <b>SETUP.md</b> in the website folder to create the free Supabase project.</li>
+    <li>Paste the project URL and anon key into <code>js/supabase-config.js</code>.</li>
+    <li>Redeploy the site and reload this page.</li>
+  </ol>
+</div>
+
+<!-- Loading -->
+<div id="view-loading" class="auth-wrap"><p style="color:var(--muted)">Loading…</p></div>
+
+<!-- Sign in -->
+<div id="view-login" class="auth-wrap" hidden>
+  <div class="auth-inner">
+    <img src="../assets/voice-work-logo.webp" alt="Voice Work" width="510" height="170">
+    <form id="login-form" class="card auth-card" novalidate>
+      <div>
+        <h1>Admin sign in</h1>
+        <p class="sub">Manage episodes, testimonials and social links.</p>
+      </div>
+      <div id="login-error" class="alert alert-error" role="alert" hidden></div>
+      <div id="login-info" class="alert alert-info" role="status" hidden></div>
+      <label class="field">Email
+        <input id="login-email" class="input" type="email" autocomplete="username" required placeholder="you@example.com">
+      </label>
+      <label class="field">Password
+        <input id="login-password" class="input" type="password" autocomplete="current-password" required placeholder="••••••••">
+      </label>
+      <button id="forgot-btn" class="link-btn" type="button">Forgot password?</button>
+      <button class="btn btn-primary btn-block" type="submit">Sign in →</button>
+    </form>
+    <a class="back-link" href="../">← Back to the website</a>
+  </div>
+</div>
+
+<!-- Set a new password (from the reset email) -->
+<div id="view-reset" class="auth-wrap" hidden>
+  <div class="auth-inner">
+    <img src="../assets/voice-work-logo.webp" alt="Voice Work" width="510" height="170">
+    <form id="reset-form" class="card auth-card">
+      <div>
+        <h1>Choose a new password</h1>
+        <p class="sub">At least 8 characters.</p>
+      </div>
+      <div id="reset-error" class="alert alert-error" role="alert" hidden></div>
+      <label class="field">New password
+        <input id="reset-password" class="input" type="password" autocomplete="new-password" minlength="8" required>
+      </label>
+      <button class="btn btn-primary btn-block" type="submit">Save password</button>
+    </form>
+  </div>
+</div>
+
+<!-- Signed in, but not an admin -->
+<div id="view-denied" class="auth-wrap" hidden>
+  <div class="card auth-card" style="max-width:440px">
+    <h1>No admin access</h1>
+    <p class="sub">This account isn’t on the admin list. Ask the site owner to add your email in Supabase.</p>
+    <button class="btn" type="button" data-action="signout">Sign out</button>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="view-app" class="app" hidden>
+  <aside class="sidebar">
+    <img src="../assets/voice-work-logo.webp" alt="Voice Work" width="510" height="170">
+    <div class="side-label" id="nav-label">CONTENT</div>
+    <div role="tablist" aria-labelledby="nav-label" style="display:contents">
+      <button class="tab" role="tab" id="tab-episodes" aria-controls="panel-episodes" aria-selected="true" data-tab="episodes"><span>Episodes</span></button>
+      <button class="tab" role="tab" id="tab-testimonials" aria-controls="panel-testimonials" aria-selected="false" data-tab="testimonials"><span>Testimonials</span></button>
+      <button class="tab" role="tab" id="tab-submissions" aria-controls="panel-submissions" aria-selected="false" data-tab="submissions"><span>Submissions</span><span class="badge" id="sub-badge" hidden>0</span></button>
+      <button class="tab" role="tab" id="tab-social" aria-controls="panel-social" aria-selected="false" data-tab="social"><span>Social links</span></button>
+    </div>
+    <div class="side-spacer"></div>
+    <a class="side-link" href="../" target="_blank" rel="noopener">View live site
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+    <button class="side-link muted" type="button" data-action="signout">Sign out</button>
+  </aside>
+
+  <main class="main">
+    <div class="main-inner">
+
+      <!-- EPISODES -->
+      <section class="panel" id="panel-episodes" role="tabpanel" aria-labelledby="tab-episodes">
+        <header class="panel-head">
+          <div>
+            <div class="eyebrow">Shows in “The work speaks for itself”</div>
+            <h1>Episodes</h1>
+            <p>Paste a YouTube link, then add where else people can listen.</p>
+          </div>
+        </header>
+
+        <form id="ep-form" class="editor" novalidate>
+          <div class="editor-grid">
+            <div class="editor-col">
+              <h2 id="ep-form-title">Add an episode</h2>
+              <div id="ep-error" class="alert alert-error" role="alert" hidden></div>
+              <label class="field">YouTube link
+                <input id="ep-youtube" class="input" type="url" required placeholder="https://www.youtube.com/watch?v=…">
+              </label>
+              <label class="field">Episode title <span class="hint">Filled in from YouTube when possible. Edit if needed.</span>
+                <input id="ep-title" class="input" type="text" required maxlength="200">
+              </label>
+              <div class="field" role="group" aria-labelledby="ep-links-label">
+                <span id="ep-links-label">Also available on</span>
+                <div class="link-row"><span class="label-fixed">Spotify</span><input id="ep-spotify" class="input" type="url" aria-label="Spotify link" placeholder="https://open.spotify.com/episode/…"></div>
+                <div class="link-row"><span class="label-fixed">Apple Podcasts</span><input id="ep-apple" class="input" type="url" aria-label="Apple Podcasts link" placeholder="https://podcasts.apple.com/…"></div>
+                <div id="ep-extra" style="display:flex;flex-direction:column;gap:10px"></div>
+                <button id="ep-add-link" class="btn btn-dashed btn-sm" type="button" style="align-self:flex-start">+ Add another link (Amazon Music, TikTok, Instagram…)</button>
+              </div>
+            </div>
+            <div class="editor-col">
+              <span class="field" style="margin:0">Preview on the website</span>
+              <div class="preview" aria-hidden="true">
+                <div class="preview-thumb" id="ep-prev-thumb"><span class="empty">Paste a YouTube link to see the thumbnail</span></div>
+                <div class="preview-body">
+                  <div class="preview-title" id="ep-prev-title">Episode title</div>
+                  <div class="preview-chips" id="ep-prev-chips"></div>
+                </div>
+              </div>
+              <label class="check"><input id="ep-visible" type="checkbox" checked> Show on website</label>
+              <div class="actions" style="margin-top:auto">
+                <button class="btn btn-primary" type="submit" id="ep-save">Save episode</button>
+                <button class="btn" type="button" id="ep-cancel">Clear</button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <section class="list" aria-labelledby="ep-list-title">
+          <h2 id="ep-list-title">On the website <span>· use the arrows to reorder</span></h2>
+          <div id="ep-list" class="list"></div>
+        </section>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section class="panel" id="panel-testimonials" role="tabpanel" aria-labelledby="tab-testimonials" hidden>
+        <header class="panel-head">
+          <div>
+            <div class="eyebrow">Shows in “Client testimonials”</div>
+            <h1>Testimonials</h1>
+            <p>Add one by hand, or approve ones clients send through your share link.</p>
+          </div>
+          <button class="btn btn-primary" type="button" id="t-new">+ Add testimonial</button>
+        </header>
+
+        <div class="share-box">
+          <span style="font:600 14px var(--display)">Your share link</span>
+          <code id="share-url"></code>
+          <button class="btn btn-sm" type="button" id="copy-share">Copy link</button>
+        </div>
+
+        <form id="t-form" class="editor" hidden novalidate>
+          <div class="editor-col">
+            <h2 id="t-form-title">Add a testimonial</h2>
+            <div id="t-error" class="alert alert-error" role="alert" hidden></div>
+            <div class="grid-2">
+              <label class="field">Name
+                <input id="t-name" class="input" type="text" required maxlength="100">
+              </label>
+              <label class="field">Role and show or business
+                <input id="t-role" class="input" type="text" maxlength="150" placeholder="e.g. Host of The British English Podcast">
+              </label>
+            </div>
+            <label class="field">Headline <span class="hint">The short bold line at the top of the card.</span>
+              <input id="t-headline" class="input" type="text" maxlength="120">
+            </label>
+            <label class="field">Testimonial
+              <textarea id="t-body" class="textarea" required maxlength="2000"></textarea>
+            </label>
+            <div class="grid-2">
+              <label class="field">Rating
+                <select id="t-rating" class="input select">
+                  <option value="5">★★★★★ 5</option><option value="4">★★★★ 4</option><option value="3">★★★ 3</option><option value="2">★★ 2</option><option value="1">★ 1</option>
+                </select>
+              </label>
+              <label class="field">Status
+                <select id="t-status" class="input select">
+                  <option value="published">Live on website</option>
+                  <option value="hidden">Hidden</option>
+                </select>
+              </label>
+            </div>
+            <p id="t-email-note" class="sub-meta" hidden></p>
+            <div class="actions">
+              <button class="btn btn-primary" type="submit">Save testimonial</button>
+              <button class="btn" type="button" id="t-cancel">Cancel</button>
+            </div>
+          </div>
+        </form>
+
+        <div id="t-list" class="list"></div>
+      </section>
+
+      <!-- SUBMISSIONS -->
+      <section class="panel" id="panel-submissions" role="tabpanel" aria-labelledby="tab-submissions" hidden>
+        <header class="panel-head">
+          <div>
+            <div class="eyebrow">From your share link</div>
+            <h1>Submissions</h1>
+            <p>Nothing goes live until you approve it. You can tidy the wording first.</p>
+          </div>
+        </header>
+        <div id="s-list" class="list"></div>
+      </section>
+
+      <!-- SOCIAL -->
+      <section class="panel" id="panel-social" role="tabpanel" aria-labelledby="tab-social" hidden>
+        <header class="panel-head">
+          <div>
+            <div class="eyebrow">Shows in the footer</div>
+            <h1>Social links</h1>
+            <p>Leave a field empty to hide that icon.</p>
+          </div>
+        </header>
+        <form id="social-form" class="social-form" novalidate>
+          <div id="social-fields" style="display:flex;flex-direction:column;gap:14px"></div>
+          <div id="social-error" class="alert alert-error" role="alert" hidden></div>
+          <button class="btn btn-primary" type="submit" style="align-self:flex-start;margin-top:6px">Save links</button>
+        </form>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

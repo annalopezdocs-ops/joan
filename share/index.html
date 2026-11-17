@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Share your experience | Voice Work</title>
+<meta name="description" content="Worked with Voice Work? Share a short testimonial about your experience.">
+<meta name="robots" content="noindex,follow">
+<meta name="theme-color" content="#061b38">
+<link rel="icon" href="../assets/favicon-48.png" type="image/png">
+<meta property="og:title" content="How was working with Voice Work?">
+<meta property="og:description" content="Share a short testimonial. It takes about two minutes.">
+<meta property="og:image" content="https://voiceworkvideoandaudio.vercel.app/assets/og-image-v2.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/admin.css">
+<script src="../js/supabase-config.js"></script>
+<script type="module" src="../js/share.js"></script>
+</head>
+<body>
+<nav class="share-nav" aria-label="Voice Work">
+  <a href="../" aria-label="Voice Work home"><img src="../assets/voice-work-logo.webp" alt="Voice Work" width="510" height="170"></a>
+  <a class="plain" href="../">Visit website</a>
+</nav>
+
+<main class="share-main">
+  <div id="share-form-wrap">
+    <header class="share-header">
+      <span class="pill">CLIENT TESTIMONIAL</span>
+      <h1>How was working <span>with Voice Work?</span></h1>
+      <p>It takes about two minutes. Joan reads every one before it goes on the website.</p>
+    </header>
+
+    <form id="share-form" class="card share-form" novalidate>
+      <div id="share-error" class="alert alert-error" role="alert" hidden></div>
+
+      <fieldset>
+        <legend>About you</legend>
+        <div class="grid-2">
+          <label class="field">Your name *
+            <input id="s-name" class="input" name="name" type="text" required maxlength="100" autocomplete="name" placeholder="e.g. Bri Conn">
+          </label>
+          <label class="field">Your role and show or business *
+            <input id="s-role" class="input" name="role" type="text" required maxlength="150" placeholder="e.g. Host of the Childfree Wealth Podcast">
+          </label>
+        </div>
+        <label class="field">Email <span class="hint">Optional. Only Joan sees this, in case she has a question.</span>
+          <input id="s-email" class="input" name="email" type="email" maxlength="200" autocomplete="email" placeholder="you@example.com">
+        </label>
+      </fieldset>
+
+      <hr class="divider">
+
+      <fieldset>
+        <legend>Your testimonial</legend>
+        <div class="field" role="radiogroup" aria-labelledby="rating-label">
+          <span id="rating-label">Rating</span>
+          <div class="rating" id="rating">
+            <label><input type="radio" name="rating" value="1"><span aria-hidden="true">★</span><span class="visually-hidden">1 star</span></label>
+            <label><input type="radio" name="rating" value="2"><span aria-hidden="true">★</span><span class="visually-hidden">2 stars</span></label>
+            <label><input type="radio" name="rating" value="3"><span aria-hidden="true">★</span><span class="visually-hidden">3 stars</span></label>
+            <label><input type="radio" name="rating" value="4"><span aria-hidden="true">★</span><span class="visually-hidden">4 stars</span></label>
+            <label><input type="radio" name="rating" value="5" checked><span aria-hidden="true">★</span><span class="visually-hidden">5 stars</span></label>
+          </div>
+        </div>
+        <label class="field">In one line, what stood out? <span class="hint">Optional. Shown as the bold headline on your card.</span>
+          <input id="s-headline" class="input" name="headline" type="text" maxlength="120" placeholder="e.g. Makes podcast production faster and easier.">
+        </label>
+        <label class="field">Tell us about your experience *
+          <textarea id="s-body" class="textarea" name="body" required maxlength="2000" rows="6" placeholder="What did Voice Work help with? What changed for you or your show?"></textarea>
+          <span class="hint">2–5 sentences works best.</span>
+        </label>
+        <!-- Spam trap: people never see this field; bots fill it in. -->
+        <div class="hp" aria-hidden="true">
+          <label>Leave this empty <input type="text" name="company_website" tabindex="-1" autocomplete="off"></label>
+        </div>
+      </fieldset>
+
+      <label class="check">
+        <input id="s-consent" type="checkbox" required>
+        <span>I’m happy for Voice Work to show my name, role and testimonial on its website and social media.</span>
+      </label>
+
+      <button class="btn btn-primary btn-block" type="submit" id="s-submit">Send testimonial →</button>
+    </form>
+  </div>
+
+  <div id="share-thanks" class="card thanks" hidden tabindex="-1">
+    <div class="tick"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7ee0bd" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></div>
+    <h1>Thank you!</h1>
+    <p>Joan will read it and let you know when it’s on the website.</p>
+    <a class="btn" href="../">Back to the website</a>
+  </div>
+</main>
+</body>
+</html>
